@@ -6,6 +6,9 @@ import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 public class SomeDelegateTest
 {
@@ -17,11 +20,11 @@ public class SomeDelegateTest
 			public void configure(Binder binder)
 			{
 				binder.bind(SomeHelper.class).to(MockSomeHelper.class);
-				binder.bind(SomeHelper2.class).to(MockSomeHelper2.class);
+				binder.install(new FactoryModuleBuilder().implement(SomeHelper2.class, MockSomeHelper2.class).build(SomeFactory.class));
 			}
 		});
 
-		SomeDelegate someDelegate = new SomeDelegate();
+		SomeDelegate someDelegate = injector.getInstance(SomeDelegate.class);
 		someDelegate.processSomething(injector);
 	}
 
@@ -36,9 +39,10 @@ public class SomeDelegateTest
 
 	private static class MockSomeHelper2 extends SomeHelper2
 	{
-		public MockSomeHelper2(String msg)
+		@AssistedInject
+		public MockSomeHelper2(@Assisted("msg1") String msg1, @Assisted("msg2") String msg2)
 		{
-			super(msg);
+			super(msg1, msg2);
 		}
 		
 		@Override

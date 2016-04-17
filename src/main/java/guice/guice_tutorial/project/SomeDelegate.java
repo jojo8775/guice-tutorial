@@ -5,11 +5,15 @@ import com.google.inject.Injector;
 
 public class SomeDelegate
 {
-	public void processSomething(Injector injector){
+	@Inject
+	private SomeFactory factory;
+
+	public void processSomething(Injector injector)
+	{
 		SomeHelper helper1 = injector.getInstance(SomeHelper.class);
 		helper1.print();
-		
-//		A helper2 = injector.getInstance(SomeFactory.class).createSomeHelper2("Some production text");
-//		helper2.print();
+
+		SomeHelper2 helper2 = factory.createSomeHelper2("prodution msg 1", "production msg 2");
+		helper2.print();
 	}
 }

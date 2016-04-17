@@ -15,21 +15,15 @@ public class M
 {
 	public static void main(String[] args)
 	{
-//		Injector injector = Guice.createInjector(new ModuleA());
-//		blaa(injector);
-//		A a = new A();
-//		a.print();
-		
-		Injector injector = Guice.createInjector(new SomeModule());
-		
-		SomeDelegate someDelegate = new SomeDelegate();
+//		Injector injector = Guice.createInjector(new SomeModule());
+		Injector injector = Guice.createInjector(new Module()
+		{
+			public void configure(Binder binder)
+			{
+				binder.install(new FactoryModuleBuilder().build(SomeFactory.class));
+			}
+		});
+		SomeDelegate someDelegate = injector.getInstance(SomeDelegate.class);
 		someDelegate.processSomething(injector);
-	}
-	
-	public static void blaa(Injector injector){
-		
-		A a = injector.getInstance(A.class);
-		a.print();
-		System.out.println(a.text());
 	}
 }
