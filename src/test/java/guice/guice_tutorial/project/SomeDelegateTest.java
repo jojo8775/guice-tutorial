@@ -1,5 +1,7 @@
 package guice.guice_tutorial.project;
 
+import java.util.List;
+
 import org.junit.Test;
 
 import com.google.inject.Binder;
@@ -20,7 +22,8 @@ public class SomeDelegateTest
 			public void configure(Binder binder)
 			{
 				binder.bind(SomeHelper.class).to(MockSomeHelper.class);
-				binder.install(new FactoryModuleBuilder().implement(SomeHelper2.class, MockSomeHelper2.class).build(SomeFactory.class));
+				binder.install(new FactoryModuleBuilder().implement(SomeHelper2.class, MockSomeHelper2.class)
+						.implement(SomeHelper3.class, MockSampleHelper3.class).build(SomeFactory.class));
 			}
 		});
 
@@ -44,10 +47,29 @@ public class SomeDelegateTest
 		{
 			super(msg1, msg2);
 		}
-		
+
 		@Override
-		public void print(){
+		public void print()
+		{
 			System.out.println("This is constructor injection");
+		}
+	}
+
+	private static class MockSampleHelper3 extends SomeHelper3
+	{
+		private List<String> msgList;
+
+		@AssistedInject
+		public MockSampleHelper3(@Assisted List<String> msgList)
+		{
+			super(msgList);
+			this.msgList = msgList;
+		}
+
+		@Override
+		public void print()
+		{
+			System.out.println("This is mock list");
 		}
 	}
 }
