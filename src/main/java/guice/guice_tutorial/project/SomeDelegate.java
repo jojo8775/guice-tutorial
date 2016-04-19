@@ -20,5 +20,9 @@ public class SomeDelegate
 		
 		SomeHelper3 helper3 = factory.createSomeHelper3(Arrays.asList("msg 1, msh2"));
 		helper3.print();
+		
+		SomeModel model = new SomeModel.Builder().name("Jeebs in prod").build();
+		SomeHelper4 helper4 = factory.createSomeHelper4(model);
+		helper4.print();
 	}
 }

@@ -9,4 +9,6 @@ public interface SomeFactory
 	SomeHelper2 createSomeHelper2(@Assisted("msg1") String msg1, @Assisted("msg2") String msg2);
 	
 	SomeHelper3 createSomeHelper3(@Assisted List<String> msgList);
+	
+	SomeHelper4 createSomeHelper4(@Assisted SomeModel model);
 }
